@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.2.0/remixicon.min.css"
+    />
+    <link rel="stylesheet" href="src/assets/loginpage.css" />
+    <title>SoundSoup loginpage</title>
+  </head>
+
+  <body>
+    <button id="back-button" class="custom-btn btn-5" onclick="goBack()">Назад</button>
+    <video autoplay muted loop id="video-bg">
+      <source src="public/videos/videoonfon.mp4" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+
+    <div class="container">
+      <div class="signup-section">
+        <header>Регистрация</header>
+
+        <div class="social-buttons">
+          <button><i class="bx bxl-yahoo"></i> Яндекс ID</button>
+          <button><i class="ri-vk-fill"></i> VK</button>
+        </div>
+
+        <div class="separator">
+          <div class="line"></div>
+          <p>Или</p>
+          <div class="line"></div>
+        </div>
+
+        <form>
+          <input type="text" placeholder="Полное имя" required />
+          <input type="email" placeholder="Электронный адрес" required />
+          <input type="password" placeholder="Пароль" required />
+          <a href="#">Забыли пароль?</a>
+          <button type="submit" class="btn">Зарегистрироваться</button>
+        </form>
+      </div>
+
+      <div class="login-section">
+        <header>Войти</header>
+
+        <div class="social-buttons">
+          <button><i class="bx bxl-yahoo"></i> Яндекс ID</button>
+          <button><i class="ri-vk-fill"></i> VK</button>
+        </div>
+
+        <div class="separator">
+          <div class="line"></div>
+          <p>Или</p>
+          <div class="line"></div>
+        </div>
+
+        <form>
+          <input type="email" placeholder="Электронный адрес" required />
+          <input type="password" placeholder="Пароль" required />
+          <a href="#">Забыли пароль?</a>
+          <button type="submit" class="btn">Войти</button>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      function goBack() {
+        if (document.referrer) {
+          window.history.back()
+        } else {
+          window.location.href = 'index.html' // Fallback URL
+        }
+      }
+    </script>
+    <script src="src/lgnpage.js"></script>
+  </body>
+</html>
