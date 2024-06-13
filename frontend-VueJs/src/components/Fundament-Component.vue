@@ -52,7 +52,7 @@ export default {
     </div>
 
     <div class="sidebar">
-      <div class="item active">
+      <div class="item">
         <a href="/index.html">
           <i class="ri-home-4-line"></i>
           <h3>Главная</h3>
