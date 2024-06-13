@@ -9,16 +9,21 @@ const props = defineProps({
   imageUrl: String,
   rate: Number,
   id: Number,
+  year: String,
+  genres: Array,
+  tracklist: Array,
 });
 
 const formattedRate = computed(() => {
   if (props.rate != 0) {
-    return props.rate.toFixed(1);
+    if (props.rate != 10) {
+      return props.rate.toFixed(1);
+    } else {
+      return 10;
+    }
   }
   return "-";
 });
-
-const emit = defineEmits(["open-modal"]);
 
 const rateColorClass = computed(() => {
   if (formattedRate.value >= 7) {
@@ -32,6 +37,8 @@ const rateColorClass = computed(() => {
   }
 });
 
+const emit = defineEmits(["open-modal"]);
+
 function openModal() {
   emit("open-modal", {
     title: props.title,
@@ -39,6 +46,9 @@ function openModal() {
     imageUrl: props.imageUrl,
     rate: props.rate,
     id: props.id,
+    year: props.year,
+    tracklist: props.tracklist,
+    genres: props.genres,
   });
 }
 </script>
@@ -59,7 +69,7 @@ function openModal() {
         <span class="font-light text-[12px]">{{ artist }} </span>
       </div>
       <div
-        class="w-6 h-6 rounded bg-green-500 place-content-center flex"
+        class="w-6 h-6 rounded place-content-center flex"
         :class="rateColorClass"
       >
         <span class="font-regular m-auto text-[11px] text-white text-4"

@@ -42,6 +42,9 @@ function closeModal() {
           :artist="item.artist"
           :imageUrl="item.imageUrl"
           :rate="item.rate"
+          :year="item.year"
+          :tracklist="item.tracklist"
+          :genres="item.genres"
           @open-modal="openModal"
         />
       </div>
