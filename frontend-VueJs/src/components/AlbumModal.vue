@@ -21,23 +21,41 @@
           alt="Album Cover"
           class="w-full rounded-lg mb-4"
         />
-        <div class="mt-4">
-          <h3 class="text-lg font-semibold">Tracklist</h3>
-          <ul class="list-disc pl-5">
-            <!-- Здесь будут треки -->
-          </ul>
+        <div class="mt-4 p-2 ba bg-gray-100 rounded-lg">
+          <h3 class="text-[18px] font-bold flex justify-center m-1">
+            Треклист
+          </h3>
+          <!-- Здесь будут треки -->
+          <ol class="list-decimal pl-5 font-light text-[14px]">
+            <li v-for="track in album.tracklist" :key="track">
+              {{ track }}
+            </li>
+          </ol>
         </div>
       </div>
 
       <!-- Правая часть окна: название альбома, рейтинг, отзывы и форма для добавления отзыва -->
       <div class="w-9/12">
         <div class="mb-4">
-          <h2 class="text-xl font-bold">{{ album.title }}</h2>
-          <p class="text-gray-700">{{ album.artist }}</p>
-          <div class="flex items-center mt-4">
-            <p class="text-gray-700 mr-2 mt-1.5">
-              {{ album.rate !== 0 ? album.rate : "-" }}
+          <h2 class="font-bold text-[34px]">{{ album.title }}</h2>
+          <p class="text-[20px]">{{ album.artist }}</p>
+
+          <div class="mb-4 mt-2">
+            <p class="text-gray-700 text-[12px]">Год: {{ album.year }}</p>
+            <p class="text-gray-700 text-[12px]">
+              Жанры: {{ formatGenres(album.genres) }}
             </p>
+          </div>
+
+          <div class="flex items-center mt-4">
+            <div
+              class="w-12 h-12 rounded-lg place-content-center flex mr-5"
+              :class="getRateColorClass(album.rate)"
+            >
+              <span class="font-medium m-auto text-[20px] text-white text-4"
+                >{{ getFormattedRate(album.rate) }}
+              </span>
+            </div>
             <span
               v-for="star in 10"
               :key="star"
@@ -70,48 +88,52 @@
           </div>
         </div>
 
-        <div class="mb-4">
-          <p class="text-gray-700">{{ album.year }}</p>
-          <p class="text-gray-700">{{ album.genres }}</p>
-        </div>
-
         <div>
-          <h3 class="text-lg font-semibold">Reviews</h3>
+          <h3 class="text-lg font-semibold mt-5">Рецензии</h3>
           <div
             v-for="review in backendReviews"
             :key="review.id"
             :imageUrl="review.imageUrl"
-            class="flex items-center mt-4"
+            class="flex mt-2 bg-amber-50 p-2 rounded-md"
           >
             <img
               :src="review.imageUrl || defaultAvatar"
               alt="Avatar"
-              class="w-8 h-8 rounded-full mr-2"
+              class="w-11 h-11 rounded-full mr-1"
             />
-            <div class="">
-              <p class="text-gray-800 font-semibold">{{ review.username }}</p>
-              <p class="text-gray-700">
+            <div class="ml-1">
+              <p class="text-gray-800 font-semibold text-[16px]">
+                {{ review.username }}
+              </p>
+              <p class="text-gray-700 text-[14px]">
                 {{ review.text }}
               </p>
             </div>
           </div>
           <input
             v-model="newReviewAuthor"
-            placeholder="Your Name"
-            class="w-full border rounded-lg p-2 mt-2"
+            placeholder="Ваше имя"
+            class="w-full border rounded-lg p-2 mt-2 text-[12px]"
           />
           <textarea
             v-model="newReviewText"
-            placeholder="Add a review"
-            class="w-full border rounded-lg p-2 mt-2"
+            placeholder="Напишите рецензию"
+            class="w-full border rounded-lg p-2 mt-2 text-[12px]"
           ></textarea>
-          <button
-            @click="addReview"
-            class="mt-2 px-4 py-2 bg-orange-400 text-white rounded-lg"
-          >
-            Submit Review
-          </button>
-          <p v-if="showMessage">Fill in all fields!</p>
+          <div class="flex">
+            <button
+              @click="addReview"
+              class="mt-2 px-4 py-2 bg-orange-400 text-white rounded-lg text-[12px]"
+            >
+              Отправить
+            </button>
+            <p
+              class="content-center m-4 text-[12px] text-red-500 font-semibold"
+              v-if="showMessage"
+            >
+              Заполните все поля!
+            </p>
+          </div>
         </div>
       </div>
     </div>
@@ -119,7 +141,7 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits, ref, watch } from "vue";
+import { defineProps, defineEmits, ref, watch, computed } from "vue";
 import axios from "axios";
 import Card from "@/components/Card.vue";
 
@@ -155,6 +177,34 @@ const hasRated = ref(false);
 //default ava
 const defaultAvatar = "/public/images/catavatar.jpeg";
 
+function getFormattedRate(rate) {
+  if (rate != 0 && rate != undefined) {
+    if (rate != 10) {
+      return rate.toFixed(1);
+    } else {
+      return 10;
+    }
+  }
+  return "-";
+}
+
+function getRateColorClass(rate) {
+  const formattedRate = getFormattedRate(rate);
+  if (formattedRate >= 7) {
+    return "bg-green-500";
+  } else if (formattedRate >= 4) {
+    return "bg-yellow-500";
+  } else if (formattedRate > 0) {
+    return "bg-red-500";
+  } else {
+    return "bg-gray-500";
+  }
+}
+
+function formatGenres(genres) {
+  return genres.join(", ");
+}
+
 // Функция для закрытия модального окна
 function closeModal() {
   props.onClose();
@@ -183,7 +233,7 @@ async function rateAlbum(star) {
 // Функция для загрузки отзывов с бэкэнда
 async function fetchReviews() {
   try {
-    console.log("Album ID:", props.album.id); // Выведем ID альбома в консоль перед выполнением запроса
+    console.log(props.album); // Выведем ID альбома в консоль перед выполнением запроса
     const response = await axios.get(
       `http://localhost:8080/api/v1/reviews/album_id/${props.album.id}`
     );
