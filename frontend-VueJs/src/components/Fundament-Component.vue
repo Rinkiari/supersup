@@ -43,14 +43,20 @@ export default {
   />
   <div class="left-section">
     <div class="logo">
-      <img src="/images/logo.png" />
-      <a href="index.html">Sound<span class="soup">Soup</span></a>
+      <a href="/index.html">
+        <img src="/images/logo.png" />
+      </a>
+      <a href="/index.html" class="logoshmogo"
+        >Sound<span class="soup">Soup</span>
+      </a>
     </div>
 
     <div class="sidebar">
       <div class="item active">
-        <i class="ri-home-4-line"></i>
-        <h3>Главная</h3>
+        <a href="/index.html">
+          <i class="ri-home-4-line"></i>
+          <h3>Главная</h3>
+        </a>
       </div>
       <div class="item">
         <i class="ri-user-6-line"></i>
@@ -58,9 +64,10 @@ export default {
       </div>
 
       <div class="item">
-        <i class="ri-movie-2-line"></i>
-        <h3>Популярное</h3>
-        <a href="album.html"></a>
+        <a href="/album.html">
+          <i class="ri-movie-2-line"></i>
+          <h3>Популярное</h3>
+        </a>
       </div>
       <div class="item">
         <i class="ri-film-line"></i>
@@ -106,9 +113,9 @@ export default {
   font-family: "Vazirmatn", sans-serif;
 }
 
-a {
+.item a:visited {
   text-decoration: none;
-  color: #000;
+  color: inherit;
 }
 
 img {
@@ -132,6 +139,15 @@ body {
   padding-left: 10px;
 }
 
+.sidebar .item a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  gap: 10px;
+  color: inherit; /* Inherit color from parent */
+  width: 100%; /* Ensure the link takes the full width */
+}
+
 .left-section .logo {
   display: flex;
   align-items: center;
@@ -144,6 +160,8 @@ body {
 }
 
 .left-section .logo a {
+  display: flex;
+  align-items: center;
   font-weight: 800;
   font-size: 22px;
   color: #ffffff;
@@ -335,13 +353,14 @@ ri-heart-add-2-line {
 }
 
 @media screen and (max-width: 1200px) {
-  .left-section .logo a,
+  .left-section .logo .logoshmogo,
   .left-section .sidebar .item h3,
   .left-section .sign-out h3 {
     display: none;
   }
   .left-section .logo {
     justify-content: center;
+    margin-bottom: 14px;
   }
 }
 
@@ -352,6 +371,12 @@ ri-heart-add-2-line {
 
   .left-section {
     padding-top: 70px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .logo a {
+    display: none;
   }
 }
 </style>
